@@ -1,22 +1,35 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
   children: React.ReactNode;
   className?: string;
+  safe?: boolean;
 };
 
-const ThemedView = ({ children, className }: Props) => {
+const ThemedView = ({ children, className, safe = false }: Props) => {
+  if (!safe) {
+    return (
+      <View
+        className={twMerge(
+          "flex-1 items-center w-full bg-uiBackground",
+          className
+        )}
+      >
+        {children}
+      </View>
+    );
+  }
   return (
-    <View
+    <SafeAreaView
       className={twMerge(
-        "flex-1 justify-center items-center w-full bg-uiBackground",
+        "flex-1 items-center w-full bg-uiBackground",
         className
       )}
     >
       {children}
-    </View>
+    </SafeAreaView>
   );
 };
 
