@@ -4,34 +4,42 @@ import { Stack } from "expo-router";
 import "../global.css";
 import { Colors } from "../constant/colors";
 import { StatusBar } from "expo-status-bar";
-import UserProvider from "../context/userContext/userContext";
+import UserProvider from "../context/user-context/provider-user";
+import GuestOnly from "../components/Authentication/GuestOnly";
+import { themedColor } from "../helper/themedColor";
+import BookProvider from "../context/book-context/provider-book";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const theme = Colors[(colorScheme as "light" | "dark") ?? "light"];
+  const theme = themedColor();
+
   return (
-    <UserProvider>
-      <View className={` flex-1 ${colorScheme}`}>
-        <StatusBar backgroundColor="auto" />
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: theme.navBackground,
-            },
-            headerTintColor: theme.title,
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="index"
-            options={{
-              title: "HOME",
-            }}
-          />
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(dashboard)" />
-        </Stack>
-      </View>
-    </UserProvider>
+    <View className={` flex-1 ${colorScheme}`}>
+      <UserProvider>
+        <BookProvider>
+          <GuestOnly>
+            <StatusBar backgroundColor="auto" />
+            <Stack
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: theme.navBackground,
+                },
+                headerTintColor: theme.title,
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen
+                name="index"
+                options={{
+                  title: "HOME",
+                }}
+              />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(authenticated-user)" />
+            </Stack>
+          </GuestOnly>
+        </BookProvider>
+      </UserProvider>
+    </View>
   );
 }

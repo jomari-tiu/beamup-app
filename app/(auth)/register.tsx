@@ -16,7 +16,7 @@ import ControlledInput from "../../components/ControlledInput";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUserContext } from "../../context/userContext/context";
+import { useUserContext } from "../../context/user-context/context-user";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useRouter } from "expo-router";
 
@@ -54,7 +54,7 @@ export default function Register() {
   };
 
   return (
-    <ThemedView>
+    <ThemedView safe className=" justify-center items-center">
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
         className=" border border-white"

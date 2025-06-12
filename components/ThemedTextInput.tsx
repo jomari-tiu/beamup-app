@@ -1,20 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View,
-} from "react-native";
+import { TextInput, View } from "react-native";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../constant/colors";
+import { themedColor } from "../helper/themedColor";
 
 type Props = React.ComponentProps<typeof TextInput>;
 
 export default function ThemedTextInput({ ...rest }: Props) {
-  const colorScheme = useColorScheme();
-  const theme = Colors[(colorScheme as "light" | "dark") ?? "light"];
+  const theme = themedColor();
 
   const [show, setShow] = useState(true);
   return (
