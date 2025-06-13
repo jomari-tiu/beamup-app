@@ -7,7 +7,7 @@ import { View } from "react-native";
 
 export default function Home() {
   return (
-    <ThemedView safe>
+    <ThemedView safe className=" flex-1 justify-center items-center">
       <ThemedLogo />
       <ThemedText as="title">HOME</ThemedText>
       <View className=" gap-2 items-center">
@@ -16,9 +16,6 @@ export default function Home() {
         </Link>
         <Link href="/register" className=" pb-1 border-b border-text">
           <ThemedText>Register</ThemedText>
-        </Link>
-        <Link href="/profile" className=" pb-1 border-b border-text">
-          <ThemedText>Profile</ThemedText>
         </Link>
       </View>
     </ThemedView>

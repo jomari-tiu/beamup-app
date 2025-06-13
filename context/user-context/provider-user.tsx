@@ -30,7 +30,7 @@ export default function UserProvider({
       await account.createEmailPasswordSession(email, password);
       const res = await account.get();
       setUser(res as TUser);
-      router.push("/profile");
+      router.push("/book");
     } catch (error: any) {
       throw Error(error.message);
     }

@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { BookContext } from "./context-book";
-import { databases } from "../../lib/constants/appwrite";
-import { ID, Permission, Query, Role } from "react-native-appwrite";
+import { databases, client } from "../../lib/constants/appwrite";
+import { ID, Models, Permission, Query, Role } from "react-native-appwrite";
 import { useUserContext } from "../user-context/context-user";
 import { TBooksRes } from "./type";
 
 export type TBooks = Pick<TBooksRes, "title" | "description" | "author">;
 
 export type TBooksContext = {
-  books: TBooks[];
+  books: TBooksRes[];
   fetchBooks: () => void;
-  fetchBookId: () => void;
+  fetchBookId: (id: string) => any;
   createBook: (payload: TBooks) => void;
-  updateBook: () => void;
-  deleteBook: () => void;
+  updateBook: (id: string, payload: TBooks) => void;
+  deleteBook: (id: string) => void;
 };
 
 const DATABASE_ID = "6847ee3b003221f5ac6a";
@@ -32,22 +32,31 @@ export default function BookProvider({
       const books = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
         Query.equal("userId", user?.$id ?? ""),
       ]);
-      setBooks(books as unknown as TBooksRes[]);
+      setBooks((books?.documents as TBooksRes[]) ?? []);
     } catch (error: any) {
       throw Error(error.message);
     }
   };
 
-  const fetchBookId = async () => {
+  const fetchBookId = async (id: string) => {
     try {
-    } catch (error: any) {
-      throw Error(error.message);
+      const response = await databases.getDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        id
+      );
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error("An unknown error occurred");
     }
   };
 
   const createBook = async (payload: Omit<TBooks, "userId">) => {
     try {
-      const newBook = await databases.createDocument(
+      await databases.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
         ID.unique(),
@@ -63,23 +72,56 @@ export default function BookProvider({
     }
   };
 
-  const updateBook = async () => {
+  const updateBook = async (id: string, payload: TBooks) => {
     try {
+      await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload);
     } catch (error: any) {
       throw Error(error.message);
     }
   };
 
-  const deleteBook = async () => {
+  const deleteBook = async (id: string) => {
     try {
+      await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
     } catch (error: any) {
       throw Error(error.message);
     }
   };
 
   useEffect(() => {
-    if (user) fetchBooks();
+    let unsubscribe: any;
+    const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`;
+    if (user) {
+      fetchBooks();
+      unsubscribe = client.subscribe(channel, ({ payload, events }: any) => {
+        if (events[0].includes("create")) {
+          setBooks((prev) => [...prev, payload as TBooksRes]);
+        }
+        if (events[0].includes("delete")) {
+          setBooks((prevBook) =>
+            prevBook.filter((fil) => fil.$id !== payload.$id)
+          );
+        }
+        if (events[0].includes("update")) {
+          setBooks((prevBook) =>
+            prevBook.map((iMap) => {
+              if (iMap.$id === payload.$id) {
+                return {
+                  ...iMap,
+                  ...payload,
+                };
+              }
+              return iMap;
+            })
+          );
+        }
+      });
+    }
     if (!user) setBooks([]);
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [user]);
 
   return (

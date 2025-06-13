@@ -11,7 +11,7 @@ export default function GuestOnly({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isAuth && user !== undefined) {
-      router.replace("/profile");
+      router.replace("/book");
     }
   }, [user, isAuth]);
 
