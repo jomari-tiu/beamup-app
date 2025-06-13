@@ -1,23 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { Text } from "react-native";
+import React from "react";
 import { useUserContext } from "../../context/user-context/context-user";
-import { usePathname, useRouter } from "expo-router";
+import { Redirect } from "expo-router";
+import ThemedPageLoader from "../ThemedPageLoader";
 
 export default function UserOnly({ children }: { children: React.ReactNode }) {
   const { user, isAuth } = useUserContext();
 
-  const router = useRouter();
-  const pathname = usePathname();
+  if (isAuth && user === undefined) {
+    return <Redirect href="/book" />;
+  }
 
-  useEffect(() => {
-    if (isAuth && user === undefined) {
-      router.replace("/login");
-    }
-  }, [user, isAuth, pathname]);
-
-  // while checking for useEffect conditon, this is the render will show
   if (!isAuth || !user) {
-    return <Text>Loading</Text>;
+    return <ThemedPageLoader />;
   }
   return children;
 }

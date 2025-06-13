@@ -62,7 +62,7 @@ export default function BookForm({ defaultValue, id, successCallback }: Props) {
   };
 
   return (
-    <View className="justify-center items-center gap-5 w-10/12">
+    <View className="justify-center items-center gap-5 w-11/12">
       <ControlledInput
         error={errors}
         control={control}

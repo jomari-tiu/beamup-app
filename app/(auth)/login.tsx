@@ -54,7 +54,7 @@ export default function Login() {
         onPress={Keyboard.dismiss}
         className=" border border-white"
       >
-        <View className=" flex-1 justify-center items-center gap-5 w-10/12">
+        <View className=" flex-1 justify-center items-center gap-5 w-11/12">
           <ThemedLogo />
           <ThemedText as="title">Login your account.</ThemedText>
 

@@ -43,7 +43,7 @@ export default function DashboardLayout() {
     <UserOnly>
       <ThemedView safe className=" flex-1">
         <View className=" items-center mb-10">
-          <View className=" w-10/12 justify-between flex-row items-center">
+          <View className=" w-11/12 justify-between flex-row items-center">
             <View>
               <ThemedLogo />
               <ThemedText className="text-center">{user?.email}</ThemedText>

@@ -47,7 +47,7 @@ export default function BookDetails() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ThemedView safe className=" justify-center items-center">
         {!isUpdate && (
-          <View className=" w-10/12 bg-background p-5 rounded-md border-b-4 border-primary mb-5">
+          <View className=" w-11/12 bg-background p-5 rounded-md border-b-4 border-primary mb-5">
             <ThemedText as="title">{book?.title}</ThemedText>
             <ThemedText className=" mb-5">
               Written by: {book?.author}
