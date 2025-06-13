@@ -3,7 +3,7 @@ import ThemedView from "../../components/ThemedView";
 import ThemedText from "../../components/ThemedText";
 import { useBookContext } from "../../context/book-context/context-book";
 import { FlatList, TouchableOpacity, View } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 export default function Book() {
   const { books, fetchBooks } = useBookContext();
@@ -33,6 +33,7 @@ export default function Book() {
         )}
         keyExtractor={(item) => item.$id}
       />
+      <Link href={"/login"}>go to login</Link>
     </ThemedView>
   );
 }

@@ -21,7 +21,7 @@ const ThemedView = ({ children, className, safe = false }: Props) => {
       className={twMerge("bg-uiBackground flex-1", className)}
       style={{
         paddingTop: insets.top,
-        paddingBottom: insets.bottom,
+        // paddingBottom: insets.bottom,
         paddingLeft: insets.left,
         paddingRight: insets.right,
       }}
