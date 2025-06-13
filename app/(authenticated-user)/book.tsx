@@ -33,7 +33,6 @@ export default function Book() {
         )}
         keyExtractor={(item) => item.$id}
       />
-      <Link href={"/login"}>go to login</Link>
     </ThemedView>
   );
 }
